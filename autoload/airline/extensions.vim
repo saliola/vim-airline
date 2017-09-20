@@ -265,6 +265,11 @@ function! airline#extensions#load()
     call add(loaded_ext, 'wordcount')
   endif
 
+  if get(g:, 'airline#extensions#charcount#enabled', 1)
+    call airline#extensions#charcount#init(s:ext)
+    call add(loaded_ext, 'charcount')
+  endif
+
   if get(g:, 'airline#extensions#tabline#enabled', 0)
     call airline#extensions#tabline#init(s:ext)
     call add(loaded_ext, 'tabline')
