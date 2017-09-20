@@ -18,16 +18,22 @@ function! s:update()
   let current_position = getpos(".")
 
   " count (non-whitespace) characters (\S matches a non-whitespace character)
+  " and read number of characters from v:statusmsg
   if s:countspaces
-    silent execute "%s/.//gn"
+    try
+      silent execute "%s/.//gn"
+      let cnt = str2nr(split(v:statusmsg)[0])
+    catch E486
+      let cnt = 0
+    endtry
   else
-    silent execute "%s/\\S//gn"
+    try
+      silent execute "%s/\\S//gn"
+      let cnt = str2nr(split(v:statusmsg)[0])
+    catch E486
+      let cnt = 0
+    endtry
   endif
-
-  " read number of characters from statusmsg
-  let stat = v:statusmsg
-  let parts = split(stat)
-  let cnt = str2nr(split(stat)[0])
 
   " restore the statusmsg, search register and position
   let v:statusmsg = current_status
